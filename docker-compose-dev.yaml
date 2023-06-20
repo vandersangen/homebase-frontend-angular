@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+
+  frontend:
+    image: larsvandersangen/homebase-frontend:dev-latest
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./:/usr/src/app
+      - ~/.gitconfig:/etc/gitconfig
+    environment:
+      SHELL: /bin/bash
+      NODE_ENV: development
+    networks:
+      - app-network-frontend
+    entrypoint: ng serve --host 0.0.0.0 --configuration=development
+    env_file:
+      - .env
+
+  # Nginx Service
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - phpfpm
+    ports:
+      - 8101:8080
+    volumes:
+      - ${HOMEBASE_BACKEND_PROJECT_FOLDER}/public:/var/www/homebase-backend/public
+      - ${HOMEBASE_BACKEND_PROJECT_FOLDER}/docker/config/default.conf:/etc/nginx/nginx.conf
+    networks:
+      - app-network-frontend
+
+  phpfpm:
+    image: larsvandersangen/homebase-backend:dev-latest
+    platform: linux/amd64
+    build:
+      target: dev
+      dockerfile: "${HOMEBASE_BACKEND_PROJECT_DOCKER_FILE}"
+      context: "${HOMEBASE_BACKEND_PROJECT_FOLDER}"
+    volumes:
+      - ${HOMEBASE_BACKEND_PROJECT_FOLDER}:/var/www/homebase-backend
+    environment:
+      SERVICE_NAME: phpfpm
+      SERVICE_TAGS: dev
+    networks:
+      - app-network-frontend
+    expose:
+      - "9000"
+      - "9003"
+
+  redis:
+    image: "redis:latest"
+
+# Docker Networks
+networks:
+  app-network-frontend:
+    name: app-network-frontend
+    driver: bridge
