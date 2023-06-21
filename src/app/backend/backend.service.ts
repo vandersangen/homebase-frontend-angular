@@ -1,18 +1,31 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Social} from "./Social";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackendService {
-  constructor(private http: HttpClient) { }
+  introductionText = '...';
+  socialCollection: Social[] = [{name: 'sample', href: 'blank.org', target: '_blank'}];
 
-  getSocialCollection(): Observable<Social[]> {
-    let endpoint = environment.API_URL + '/api/socials';
-    return this.http.get<Social[]>(endpoint);
+  constructor(private http: HttpClient) {
+    this.getSocialCollection();
+    this.getIntroduction();
+  }
+
+  getSocialCollection() {
+    const endpoint = environment.API_URL + '/api/socials';
+    this.http.get<Social[]>(endpoint).subscribe(value => {
+      this.socialCollection = value;
+    });
+  }
+
+  private getIntroduction() {
+    const endpoint = environment.API_URL + '/api/introduction';
+    this.http.get<string>(endpoint).subscribe(value => {
+      this.introductionText = value;
+    });
   }
 }
