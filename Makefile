@@ -110,13 +110,11 @@ remove-db:
 	@#$(CONSOLE) doctrine:database:drop --force --if-exists --env=$(ENV)
 
 test-%: ENV=ci
-test: test-functional
-test-functional: clear-cache rebuild-db seed ## Run functional tests (with db reload)
-	#$(PHPUNIT) --testdox
+
+test:
+	$(ANGULAR_CONTAINER) ng test
 
 test-rebuild-db: rebuild-db
-
-
 
 ## —— Codestyle 🔍  ————————————————————————————————————————————————————————————————
 codestyle: ## Fix codestyle issues
@@ -159,6 +157,15 @@ docker-push-phpfpm-test:
 
 docker-push-phpfpm-dev:
 	$(DOCKER) push larsvandersangen/homebase-backend:dev-latest
+
+docker-push-frontend:
+	$(DOCKER) push larsvandersangen/homebase-frontend
+
+docker-push-frontend-test:
+	$(DOCKER) push larsvandersangen/homebase-frontend:test-latest
+
+docker-push-frontend-dev:
+	$(DOCKER) push larsvandersangen/homebase-frontend:dev-latest
 
 ## —— Kubernetes  🐙  ————————————————————————————————————————————————————————————————
 k8s-deploy-dev:
