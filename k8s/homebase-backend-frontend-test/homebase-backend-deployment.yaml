@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homebase-backend-deployment
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      folder: homebase-backend-frontend
+  template:
+    metadata:
+      labels:
+        folder: homebase-backend-frontend
+
+    spec:
+      restartPolicy: Always
+
+      containers:
+
+        - name: homebase-backend-frontend
+          image: larsvandersangen/homebase-frontend:test-latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80

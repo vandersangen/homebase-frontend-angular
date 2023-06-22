@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+
+kind: Certificate
+metadata:
+  name: homebase.vandersangen.dev
+spec:
+  secretName: homebase.vandersangen.dev
+  issuerRef:
+    # Set Issuer of certificate; letsencrypt-prod is prod version of lets-encrypt
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  # Side note; commonName must be present in dnsNames
+  commonName: vandersangen.dev
+  dnsNames:
+    - homebase.vandersangen.dev
+    - vandersangen.dev
+    - www.vandersangen.dev
+    - lars.vandersangen.dev

@@ -9,7 +9,8 @@ RUN npm ci
 
 COPY . .
 
-RUN npm run build -- --output-path=./dist/out --configuration=test
+ARG NODE_ENV
+RUN npm run build -- --output-path=./dist/out --configuration=${NODE_ENV}
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:alpine as deployed
