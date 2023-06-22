@@ -18,6 +18,8 @@ spec:
     - hosts:
         - homebase.vandersangen.dev
         - vandersangen.dev
+        - lars.vandersangen.dev
+        - www.vandersangen.dev
       secretName: homebase.vandersangen.dev
 
   rules:
