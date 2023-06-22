@@ -42,3 +42,25 @@ spec:
                 name: homebase-backend-cluster-ip-frontend
                 port:
                   number: 80
+
+    - host: lars.vandersangen.dev
+      http:
+        paths:
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: homebase-backend-cluster-ip-frontend
+                port:
+                  number: 80
+
+    - host: www.vandersangen.dev
+      http:
+        paths:
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: homebase-backend-cluster-ip-frontend
+                port:
+                  number: 80
