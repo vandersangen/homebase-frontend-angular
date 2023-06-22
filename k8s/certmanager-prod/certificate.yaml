@@ -14,3 +14,5 @@ spec:
   dnsNames:
     - homebase.vandersangen.dev
     - vandersangen.dev
+    - www.vandersangen.dev
+    - lars.vandersangen.dev

@@ -44,7 +44,7 @@ up-phpfpm-dev:
 	@$(DOCKER_COMPOSE) -f ./docker-compose-dev.yaml up phpfpm nginx --build --force-recreate --detach
 
 up-frontend:
-	@$(DOCKER_COMPOSE) -f ./docker-compose-dev.yaml up frontend --build --force-recreate --detach
+	@$(DOCKER_COMPOSE) up frontend --build --force-recreate --detach
 
 up-frontend-test:
 	@$(DOCKER_COMPOSE) -f ./docker-compose-test.yaml up frontend --build --force-recreate --detach

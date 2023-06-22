@@ -9,19 +9,16 @@ services:
       context: .
       target: deployed
       dockerfile: ./Dockerfile
+      args:
+        NODE_ENV: production
     ports:
       - "4200:4200"
       - "8111:80"
     volumes:
       - ./:/usr/src/app
       - ~/.gitconfig:/etc/gitconfig
-    environment:
-      SHELL: /bin/bash
-      NODE_ENV: test
     networks:
       - app-network-frontend
-    env_file:
-      - .env
 
   # Nginx Service
   nginx:

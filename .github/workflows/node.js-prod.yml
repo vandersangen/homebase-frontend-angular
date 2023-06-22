@@ -1,10 +1,10 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-name: Node.js CI - dev
+name: Node.js CI - prod
 
 on:
   push:
-    branches-ignore: ['main']
+    branches: ["main""]
 
 jobs:
   build:
@@ -12,25 +12,22 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - run: make up-frontend-test
+    - run: make up-frontend-prod
 #     - run: make test
 
     - name: Docker compose push
-      if: github.ref == 'refs/heads/development'
       run: |
         docker login -u ${{ vars.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        make docker-push-frontend-test
+        make docker-push-frontend
 
     - name: Set k8s kubeconfig file
-      if: github.ref == 'refs/heads/development'
       uses: qgxpagamentos/kubectl-set@v1
       with:
        # A base64 encoded reference to your authorization file (~/.kube/config)
        base64-kube-config: ${{ secrets.K8S_KUBE_CONFIG }}
 
     - name: Deploy to k8s
-      if: github.ref == 'refs/heads/development'
       run: |
-       make k8s-deploy-test
+       make k8s-deploy-prod
       env:
-       K8S_NAMESPACE: ${{secrets.K8S_TEST_NAMESPACE}}
+       K8S_NAMESPACE: ${{secrets.K8S_PROD_NAMESPACE}}
