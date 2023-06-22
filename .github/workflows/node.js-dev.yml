@@ -11,26 +11,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    
+
     - run: make up-frontend-test
-#     - run: make test 
-    
+#     - run: make test
+
     - name: Docker compose push
       if: github.ref == 'refs/heads/development'
       run: |
         docker login -u ${{ vars.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         make docker-push-frontend-test
 
-#     - name: Set k8s kubeconfig file
-#       if: github.ref == 'refs/heads/development'
-#       uses: qgxpagamentos/kubectl-set@v1
-#       with:
-#         # A base64 encoded reference to your authorization file (~/.kube/config)
-#         base64-kube-config: ${{ secrets.K8S_KUBE_CONFIG }}
+    - name: Set k8s kubeconfig file
+      if: github.ref == 'refs/heads/development'
+      uses: qgxpagamentos/kubectl-set@v1
+      with:
+       # A base64 encoded reference to your authorization file (~/.kube/config)
+       base64-kube-config: ${{ secrets.K8S_KUBE_CONFIG }}
 
-#     - name: Deploy to k8s
-#       if: github.ref == 'refs/heads/development'
-#       run: |
-#         make k8s-deploy-test
-#       env:
-#         K8S_NAMESPACE: ${{secrets.K8S_TEST_NAMESPACE}}
+    - name: Deploy to k8s
+      if: github.ref == 'refs/heads/development'
+      run: |
+       make k8s-deploy-test
+      env:
+       K8S_NAMESPACE: ${{secrets.K8S_TEST_NAMESPACE}}

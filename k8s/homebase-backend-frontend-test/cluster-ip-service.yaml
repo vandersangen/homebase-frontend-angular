@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: homebase-backend-cluster-ip-frontend
+spec:
+  type: ClusterIP
+  # ServerClusterIp is coupled to the selector (metadata) tags.
+  # Which are entirely customizable.
+  selector:
+    folder: homebase-backend-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: http
