@@ -10,7 +10,7 @@ services:
       target: deployed
       dockerfile: ./Dockerfile
       args:
-        NODE_ENV: production
+        NODE_ENV: test
     ports:
       - "4200:4200"
       - "8111:80"
