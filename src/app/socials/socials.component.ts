@@ -1,8 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Social} from "../backend/Social";
+import {Component} from '@angular/core';
 import {BackendService} from "../backend/backend.service";
-import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-socials',
