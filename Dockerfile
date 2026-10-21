@@ -2,8 +2,7 @@ FROM node:20-alpine as builder
 
 WORKDIR /usr/src/app
 
-RUN npm install -g @angular/cli
-
+# No global @angular/cli: npm scripts use the version pinned in package-lock.json.
 COPY package.json package-lock.json ./
 RUN npm ci
 
