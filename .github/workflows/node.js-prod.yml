@@ -6,9 +6,16 @@ on:
   push:
     branches:  ['main']
 
+concurrency:
+  # Runs on main only, and every run deploys: a newer push waits for the running one instead of cancelling it
+  # halfway through a migration or rollout.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
     - uses: actions/checkout@v3
 
