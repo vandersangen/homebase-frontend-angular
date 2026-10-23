@@ -7,27 +7,17 @@ on:
     branches:  ['main']
 
 concurrency:
-  # A newer push to the same branch cancels the run still in progress.
+  # Runs on main only, and every run deploys: a newer push waits for the running one instead of cancelling it
+  # halfway through a migration or rollout.
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
     - uses: actions/checkout@v3
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Expose the GitHub Actions cache to Buildx
-      uses: crazy-max/ghaction-github-runtime@v3
-
-    - name: Warm Docker build cache
-      # Runs before the build context gets any secrets, so none end up in the cache. The
-      # compose builds below run on the same Buildx builder and reuse these layers.
-      run: |
-        docker buildx build --cache-from type=gha,scope=homebase-frontend-prod --cache-to type=gha,scope=homebase-frontend-prod,mode=max --target deployed --build-arg NODE_ENV=production -f Dockerfile .
 
     - run: make up-frontend
 #     - run: make test
