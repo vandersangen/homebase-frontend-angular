@@ -6,9 +6,16 @@ on:
   push:
     branches-ignore: ['main']
 
+concurrency:
+  # A newer push to the same branch cancels the run still in progress, except on development: there the run deploys,
+  # and cancelling it halfway could leave a migration or rollout half done. It waits for the running one instead.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/development' }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
     - uses: actions/checkout@v3
 

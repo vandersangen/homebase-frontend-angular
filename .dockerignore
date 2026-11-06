@@ -1,0 +1,5 @@
+# The Dockerfiles install node_modules with `npm ci` and build dist themselves. Sent along, a local node_modules was
+# copied over the installed one by the `COPY . .` that follows `npm ci`, and the context grew by hundreds of MB.
+node_modules
+.angular
+dist
