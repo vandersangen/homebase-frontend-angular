@@ -24,7 +24,7 @@ services:
 
   # Nginx Service
   nginx:
-    image: nginx:alpine
+    image: nginx:1.31.9-alpine
     depends_on:
       - phpfpm
     ports:
